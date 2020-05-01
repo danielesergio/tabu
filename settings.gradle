@@ -1,0 +1,6 @@
+rootProject.name='tabu'
+include ':framework:app'
+include ':entities'
+include ':usecases'
+include ':adapters'
+include ':framework'
