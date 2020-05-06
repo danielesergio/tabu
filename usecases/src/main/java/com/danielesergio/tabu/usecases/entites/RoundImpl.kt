@@ -3,14 +3,14 @@
  *
  * Copyright (c) 2020 Daniele Sergio
  *
- * This file is part of Tabu.
+ * This file is part of tabu.
  *
- * Tabu is free software: you can redistribute it and/or modify
+ * tabu is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Tabu is distributed in the hope that it will be useful,
+ * tabu is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -19,14 +19,14 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'java-library'
-apply plugin: 'kotlin'
+package com.danielesergio.tabu.usecases.entites
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation project(":entities")
+import com.danielesergio.tabu.entities.Round
+import com.danielesergio.tabu.entities.Team
+
+data class RoundImpl(override val point: Int, override val team: Team, override val passUsed: Int):
+    Round{
+
+    fun addPoint(pointsToAdd:Int):RoundImpl = copy(point = point + pointsToAdd)
+    fun addPassUsed():RoundImpl = copy(passUsed = passUsed + 1)
 }
-
-sourceCompatibility = "7"
-targetCompatibility = "7"
