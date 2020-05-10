@@ -3,14 +3,14 @@
  *
  * Copyright (c) 2020 Daniele Sergio
  *
- * This file is part of Tabu.
+ * This file is part of tabu.
  *
- * Tabu is free software: you can redistribute it and/or modify
+ * tabu is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Tabu is distributed in the hope that it will be useful,
+ * tabu is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -19,11 +19,22 @@
  * along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.danielesergio.tabu.usecases
+package com.danielesergio.tabu.usecases.provider
 
-import com.danielesergio.tabu.entities.Rule
-import com.danielesergio.tabu.usecases.entites.RuleImpl
-import com.danielesergio.tabu.usecases.gameconfiguration.RuleData
+import com.danielesergio.tabu.entities.Card
 
-internal fun RuleData.toRule(): Rule = RuleImpl(pointLimit, pass, resetEveryRound)
+interface CardProvider{
+    fun nextCard(): Card
+}
 
+interface CountDownTimerProvider{
+    fun get(time:Long, onFinish: OnFinish):CountDownTimer
+}
+
+typealias OnFinish = ()->Unit
+
+interface CountDownTimer{
+    fun start()
+    fun stop()
+    fun pause()
+}
