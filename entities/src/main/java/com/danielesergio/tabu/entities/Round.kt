@@ -25,4 +25,7 @@ interface Round {
     val team:Team
     val point:Int
     val passUsed:Int
+
+    fun start(){}
+    fun pause(){}
 }

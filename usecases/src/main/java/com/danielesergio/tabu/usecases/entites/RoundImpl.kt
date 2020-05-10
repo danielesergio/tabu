@@ -23,10 +23,23 @@ package com.danielesergio.tabu.usecases.entites
 
 import com.danielesergio.tabu.entities.Round
 import com.danielesergio.tabu.entities.Team
+import com.danielesergio.tabu.usecases.provider.CountDownTimer
 
-data class RoundImpl(override val point: Int, override val team: Team, override val passUsed: Int):
+data class RoundImpl(
+    private val countDownTimer: CountDownTimer,
+    override val point: Int,
+    override val team: Team,
+    override val passUsed: Int):
     Round{
 
     fun addPoint(pointsToAdd:Int):RoundImpl = copy(point = point + pointsToAdd)
     fun addPassUsed():RoundImpl = copy(passUsed = passUsed + 1)
+
+    override fun start() {
+        countDownTimer.start()
+    }
+
+    override fun pause() {
+        countDownTimer.pause()
+    }
 }
