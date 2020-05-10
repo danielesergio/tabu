@@ -30,9 +30,7 @@ sealed class GameStatus {
 
     abstract val rounds:List<Round>
 
-    fun teamPoints(team:Team):Int{
-        return rounds.filter { round -> round.team == team }.reduce().point
-    }
+    fun aggregatedTeamRounds(team:Team) = rounds.filter { round -> round.team == team }.reduce()
 
     fun allTeamPlayedSameRounds():Boolean{
         return rounds.groupBy { r -> r.team }
