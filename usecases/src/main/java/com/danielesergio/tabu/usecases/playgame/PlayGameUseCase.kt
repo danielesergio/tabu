@@ -21,10 +21,9 @@
 
 package com.danielesergio.tabu.usecases.playgame
 
-import com.danielesergio.tabu.entities.Game
 import com.danielesergio.tabu.entities.GameStatus
-import com.danielesergio.tabu.usecases.GameContext
-import com.danielesergio.tabu.usecases.entites.GameImpl
+import com.danielesergio.tabu.entities.Round
+import com.danielesergio.tabu.entities.Rule
 import com.danielesergio.tabu.usecases.provider.CardProvider
 import com.danielesergio.tabu.usecases.provider.OnFinish
 import com.danielesergio.tabu.usecases.toCardOutput
@@ -32,13 +31,14 @@ import com.danielesergio.tabu.usecases.toTeamStatus
 
 class PlayGameUseCase(
     private val presenter: PlayGamePresenter,
-    private val game: Game = GameImpl.newGame(GameContext.rule),
+    private var gameStatus: GameStatus = GameStatus.Ongoing(),
+    private val rule: Rule,
     private val cardProvider: CardProvider):PlayGame {
 
     private val onRoundFinish: OnFinish = {
-        val gameStatus = game.rule.onRoundEnd(
+        gameStatus = rule.onRoundEnd(
             round = currentRound,
-            gameStatus = game.gameStatus as GameStatus.Ongoing)
+            gameStatus = gameStatus as GameStatus.Ongoing)
         val ranking = ranking(gameStatus)
         if(gameStatus is GameStatus.Terminate){
             presenter.gameEnd(ranking.toTypedArray())
@@ -47,23 +47,18 @@ class PlayGameUseCase(
         }
     }
 
-    private var currentRound = game.rule.nextRound(game.gameStatus as GameStatus.Ongoing, onRoundFinish)
+    private var currentRound = rule.nextRound(gameStatus as GameStatus.Ongoing, onRoundFinish)
 
     override fun guessWord() {
-        currentRound = game.rule.onGuessWord(currentRound)
-        presenter.updateScore(currentRound.toTeamStatus())
-        nextCard()
+        doAction(rule::onGuessWord)
     }
 
     override fun useTabuWord() {
-        currentRound = game.rule.onUseTabuWord(currentRound)
-        presenter.updateScore(currentRound.toTeamStatus())
-        nextCard()
+        doAction(rule::onUseTabuWord)
     }
 
     override fun pass() {
-        currentRound = game.rule.onPass(currentRound)
-        nextCard()
+       doAction(rule::onPass)
     }
 
     override fun pause() {
@@ -72,6 +67,12 @@ class PlayGameUseCase(
 
     override fun start() {
         currentRound.start()
+    }
+
+    private fun doAction(action:(Round)-> Round){
+        currentRound = action.invoke(currentRound)
+        presenter.updateScore(currentRound.toTeamStatus())
+        nextCard()
     }
 
     private fun ranking(gameStatus:GameStatus) = gameStatus
