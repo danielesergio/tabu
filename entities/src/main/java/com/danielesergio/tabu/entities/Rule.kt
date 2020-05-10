@@ -26,4 +26,6 @@ interface Rule {
     fun onPass(round: Round):Round
     fun onGuessWord(round: Round):Round
     fun onRoundEnd(gameStatus: GameStatus.Ongoing, round: Round):GameStatus
+    fun nextRound(gameStatus: GameStatus.Ongoing, onRoundFinish: () -> Unit):Round
+    fun canPass(round:Round, gameStatus: GameStatus.Ongoing):Boolean
 }

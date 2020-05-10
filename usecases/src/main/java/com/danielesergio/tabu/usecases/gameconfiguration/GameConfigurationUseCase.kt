@@ -22,13 +22,13 @@
 package com.danielesergio.tabu.usecases.gameconfiguration
 
 import com.danielesergio.tabu.usecases.GameContext
-import com.danielesergio.tabu.usecases.toRule
+import com.danielesergio.tabu.usecases.entites.RuleImpl
 
 class GameConfigurationUseCase(
     private val presenter: GameConfigurationPresenter
 ): GameConfigurationController {
     override fun chooseRule(ruleData: RuleData) {
-        GameContext.rule = ruleData.toRule()
+        GameContext.rule = RuleImpl.Factory.newInstance(ruleData)
         presenter.gameReady()
     }
 }

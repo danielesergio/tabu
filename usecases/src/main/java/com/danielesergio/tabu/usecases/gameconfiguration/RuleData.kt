@@ -24,5 +24,6 @@ package com.danielesergio.tabu.usecases.gameconfiguration
 data class RuleData(
     val pointLimit:Int,
     val pass:Int,
-    val resetEveryRound:Boolean
+    val resetEveryRound:Boolean,
+    val duration:Long
 )

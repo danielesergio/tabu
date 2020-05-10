@@ -22,7 +22,9 @@
 package com.danielesergio.tabu.usecases
 
 import com.danielesergio.tabu.entities.Rule
+import com.danielesergio.tabu.usecases.provider.CountDownTimerProvider
 
 object GameContext {
     lateinit var rule:Rule
+    lateinit var countDownTimerProvider: CountDownTimerProvider
 }
